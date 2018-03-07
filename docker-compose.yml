@@ -1,0 +1,38 @@
+version: '3'
+
+services:
+
+  php:
+    build: ./php
+    volumes:
+      - ./php/src/:/var/www/html/
+      - ./php/vhost.conf:/etc/httpd/conf.d/vhost.conf
+      - ./php/php.ini:/usr/local/etc/php/php.ini
+    ports: 
+      - '80:80'
+    command: cd /var/www/html && composer install
+    command: /usr/sbin/httpd -D FOREGROUND
+    links:
+      - my-mariadb
+
+  my-mariadb:
+    image: mariadb:latest
+    restart: always
+    volumes:
+       - db-data:/var/lib/mysql/data
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3306:3306"
+
+
+  #redis:
+  #  image: redis:alpine
+  #  container_name: "laravel-redis"
+  #  ports: 
+  #    - '16379:6379'
+
+volumes:
+  db-data:
