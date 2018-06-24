@@ -2,3 +2,4 @@ db_data/*
 php/php.ini
 php/vhost.conf
 php/src/*
+.DS_Store
