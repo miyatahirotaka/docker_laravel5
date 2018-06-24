@@ -8,8 +8,6 @@ RUN rpm --import http://dl.fedoraproject.org/pub/epel/RPM-GPG-KEY-EPEL-7
 RUN rpm --import http://mirror.centos.org/centos/RPM-GPG-KEY-CentOS-7
 RUN rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
 
-ENV LC_ALL=ja_JP.UTF-8
-ENV LANGUAGE=ja_JP:ja
 ENV LANG=ja_JP.UTF-8
 
 RUN localedef -f UTF-8 -i ja_JP ja_JP.UTF-8

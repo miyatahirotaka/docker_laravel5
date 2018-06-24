@@ -1,5 +1,9 @@
 version: '3'
 
+networks:
+  app-tier:
+    driver: bridge
+
 services:
 
   php:
@@ -12,20 +16,22 @@ services:
       - '80:80'
     command: cd /var/www/html && composer install
     command: /usr/sbin/httpd -D FOREGROUND
-    links:
-      - my-mariadb
+    networks:
+      - app-tier
 
   my-mariadb:
     image: mariadb:latest
     restart: always
     volumes:
-       - db-data:/var/lib/mysql/data
+      - ./db_data:/var/lib/mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_USER: root
       MYSQL_PASSWORD: root
     ports:
       - "3306:3306"
+    networks:
+      - app-tier
 
 
   #redis:
@@ -34,5 +40,9 @@ services:
   #  ports: 
   #    - '16379:6379'
 
-volumes:
-  db-data:
+#volumes:
+#  db-data:
+#    driver_opts:
+#      type: none
+#      device: /home/docker/data/mariadb
+#      o: bind
